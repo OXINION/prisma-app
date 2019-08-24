@@ -30,11 +30,10 @@ export default ({ navigation }) => {
     if (value === "" || !value.includes(" ")) {
       return Alert.alert("Invalid secret");
     }
-
     try {
       setLoading(true);
       const {
-        data: {}
+        data: { confirmSecret }
       } = await confirmSecretMutation();
       if (confirmSecret !== "" || confirmSecret !== false) {
         logIn(confirmSecret);
@@ -42,6 +41,7 @@ export default ({ navigation }) => {
         Alert.alert("Wrong secret!");
       }
     } catch (e) {
+      console.log(e);
       Alert.alert("Can't confirm secret");
     } finally {
       setLoading(false);
