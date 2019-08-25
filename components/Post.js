@@ -29,7 +29,9 @@ const IconsContainer = styled.View`
   flex-direction: row;
 `;
 
-const IconContainer = styled.View``;
+const IconContainer = styled.View`
+  margin-right: 10px;
+`;
 
 const Post = ({ user, location, files = [] }) => {
   return (
