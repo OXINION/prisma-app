@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { ScrollView, RefreshControl } from "react-native";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
-import { ScrollView, RefreshControl } from "react-native-gesture-handler";
 
 const FEED_QUERY = gql`
   {
@@ -56,7 +56,6 @@ export default () => {
       setRefreshing(false);
     }
   };
-  console.log(loading, data);
   return (
     <ScrollView
       refreshControl={
