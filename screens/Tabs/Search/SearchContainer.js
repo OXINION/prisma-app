@@ -25,7 +25,6 @@ export default class extends React.Component {
       onSubmit: this.onSubmit
     });
   }
-
   onChange = text => {
     const { navigation } = this.props;
     this.setState({ term: text, shouldFetch: false });
@@ -34,7 +33,6 @@ export default class extends React.Component {
     });
   };
   onSubmit = () => {
-    console.log("Submit");
     this.setState({ shouldFetch: true });
   };
   render() {

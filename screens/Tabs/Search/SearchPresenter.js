@@ -27,7 +27,6 @@ const SearchPresenter = ({ term, shouldFetch }) => {
     skip: !shouldFetch
   });
   console.log(data, loading);
-
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -42,7 +41,7 @@ const SearchPresenter = ({ term, shouldFetch }) => {
       refreshControl={
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }
-    ></ScrollView>
+    />
   );
 };
 
