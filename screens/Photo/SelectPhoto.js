@@ -21,7 +21,7 @@ export default () => {
   const getPhotos = async () => {
     try {
       const { assets } = await MediaLibrary.getAssetsAsync();
-      const { firstPhoto } = assets;
+      const [firstPhoto] = assets;
       setSelected(firstPhoto);
       setAllPhotos(assets);
     } catch (e) {
@@ -56,7 +56,7 @@ export default () => {
               style={{ width: 100, height: 100 }}
               source={{ uri: selected.uri }}
             />
-          ) : null}{" "}
+          ) : null}
         </View>
       )}
     </View>
