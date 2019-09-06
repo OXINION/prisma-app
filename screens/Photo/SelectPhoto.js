@@ -41,7 +41,7 @@ export default () => {
       }
     } catch (e) {
       console.log(e);
-      hasPermission(false);
+      setHasPermission(false);
     }
   };
   useEffect(() => {
@@ -66,7 +66,6 @@ export default () => {
                     onPress={() => changeSelected(photo)}
                   >
                     <Image
-                      key={photo.id}
                       source={{ uri: photo.uri }}
                       style={{
                         width: constants.width / 3,
