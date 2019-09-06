@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Camera } from "expo-camera";
-import Loader from "../../components/Loader";
+import { Camera } from 'expo-camera'
 import constants from "../../constants";
+import * as Permissions from "expo-permissions";
+import Loader from "../../components/Loader";
 
 const View = styled.View`
   flex: 1;
 `;
-
-const Text = styled.Text``;
 
 export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -17,12 +15,15 @@ export default ({ navigation }) => {
   const askPermission = async () => {
     try {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
+
       if (status === "granted") {
         setHasPermission(true);
       }
     } catch (e) {
       console.log(e);
-      hasPermission(false);
+      setHasPermission(false);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
