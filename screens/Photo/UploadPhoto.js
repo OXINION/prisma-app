@@ -10,10 +10,12 @@ import AuthButton from "../../components/AuthButton";
 import { useMutation } from "react-apollo-hooks";
 
 const UPLOAD = gql`
-  mutation upload($caption: String!, $files: [String!]!, $location: String){
-  upload(caption: $caption, files: $files, location: $location){
-    id
-  }
+  mutation upload($caption: String!, $files: [String!]!, $location: String) {
+    upload(caption: $caption, files: $files, location: $location) {
+      id
+      caption
+      location
+    }
   }
 `;
 
@@ -77,6 +79,7 @@ export default ({ navigation }) => {
       uri: photo.uri
     });
     try {
+      setIsLoading(true);
       const {
         data: { location }
       } = await axios.post("http://localhost:4000/api/upload", formData, {
@@ -91,6 +94,8 @@ export default ({ navigation }) => {
       console.log(upload);
     } catch (e) {
       Alert.alert("Cant upload", "Try later");
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
