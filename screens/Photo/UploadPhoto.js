@@ -2,10 +2,20 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Image, ActivityIndicator, Alert } from "react-native";
 import styled from "styled-components";
+import { gql } from "apollo-boost";
 import useInput from "../../hooks/useInput";
 import styles from "../../styles";
 import constants from "../../constants";
 import AuthButton from "../../components/AuthButton";
+import { useMutation } from "react-apollo-hooks";
+
+const UPLOAD = gql`
+  mutation upload($caption: String!, $files: [String!]!, $location: String){
+  upload(caption: $caption, files: $files, location: $location){
+    id
+  }
+  }
+`;
 
 const View = styled.View`
   flex: 1;
@@ -47,6 +57,13 @@ export default ({ navigation }) => {
   const photo = navigation.getParam("photo");
   const captionInput = useInput("");
   const locationInput = useInput("");
+  const uploadMutation = useMutation(UPLOAD, {
+    variables: {
+      caption: captionInput.value,
+      location: locationInput.value,
+      files: [fileUrl]
+    }
+  });
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
       Alert.alert("All fields are required");
@@ -67,9 +84,11 @@ export default ({ navigation }) => {
           "content-type": "multipart/form-data"
         }
       });
-      console.log(location);
-      
       setFileUrl(location);
+      const {
+        data: { upload }
+      } = await uploadMutation();
+      console.log(upload);
     } catch (e) {
       Alert.alert("Cant upload", "Try later");
     }
