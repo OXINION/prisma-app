@@ -6,8 +6,8 @@ import { gql } from "apollo-boost";
 import useInput from "../../hooks/useInput";
 import styles from "../../styles";
 import constants from "../../constants";
-import AuthButton from "../../components/AuthButton";
 import { useMutation } from "react-apollo-hooks";
+import { FEED_QUERY } from "../Tabs/Home";
 
 const UPLOAD = gql`
   mutation upload($caption: String!, $files: [String!]!, $location: String) {
@@ -55,16 +55,11 @@ const Text = styled.Text`
 
 export default ({ navigation }) => {
   const [loading, setIsLoading] = useState(false);
-  const [fileUrl, setFileUrl] = useState("");
   const photo = navigation.getParam("photo");
-  const captionInput = useInput("");
-  const locationInput = useInput("");
+  const captionInput = useInput("dfdf");
+  const locationInput = useInput("dfdfd");
   const uploadMutation = useMutation(UPLOAD, {
-    variables: {
-      caption: captionInput.value,
-      location: locationInput.value,
-      files: [fileUrl]
-    }
+    refetchQueries: () => [{ query: FEED_QUERY }]
   });
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
@@ -87,11 +82,19 @@ export default ({ navigation }) => {
           "content-type": "multipart/form-data"
         }
       });
-      setFileUrl(location);
+
       const {
         data: { upload }
-      } = await uploadMutation();
-      console.log(upload);
+      } = await uploadMutation({
+        variables: {
+          files: [location],
+          caption: captionInput.value,
+          location: locationInput.value
+        }
+      });
+      if (upload.id) {
+        navigation.navigate("TabNavigation");
+      }
     } catch (e) {
       Alert.alert("Cant upload", "Try later");
     } finally {
