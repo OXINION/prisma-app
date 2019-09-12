@@ -58,7 +58,7 @@ export default ({ navigation }) => {
   const photo = navigation.getParam("photo");
   const captionInput = useInput("dfdf");
   const locationInput = useInput("dfdfd");
-  const uploadMutation = useMutation(UPLOAD, {
+  const [uploadMutation] = useMutation(UPLOAD, {
     refetchQueries: () => [{ query: FEED_QUERY }]
   });
   const handleSubmit = async () => {
